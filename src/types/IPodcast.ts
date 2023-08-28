@@ -1,3 +1,5 @@
+import { Category } from "./IFeed";
+
 export interface IPodcast {
   id: string;
   name: { label: string };
@@ -11,9 +13,10 @@ export interface IPodcast {
   summary: {
     label: string;
   };
+  category: Category;
 }
 
-export interface Thumbnail {
+interface Thumbnail {
   label: string;
   attributes: {
     height: string;

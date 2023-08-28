@@ -1,12 +1,19 @@
-import { IPodcast } from "../../types";
+import type { IEpisode, IPodcast, IFeed } from "../../types";
+import { AllCorsResponse, getAllCorsURL } from "../utils/cors";
 import { getJSON } from "../utils/http";
-import { mapEntryToIPodcast as mapGetPodcastsResponseTypeToIPodcastList } from "./responseMappers";
-import { GetPodcastsResponse } from "./types";
-import { TOP_100_US_PODCASTS } from "./urls";
+import { mapFeedToIPodcastList } from "./mappers";
+import { getPodcastEpisodesUrl, getTop100UsPodcastsUrl } from "./urls";
 
 export async function getPodcasts(): Promise<IPodcast[]> {
-  const data = await getJSON<GetPodcastsResponse>(TOP_100_US_PODCASTS);
-  return mapGetPodcastsResponseTypeToIPodcastList(data);
+  const data = await getJSON<AllCorsResponse>(
+    getAllCorsURL(getTop100UsPodcastsUrl())
+  );
+  return mapFeedToIPodcastList(JSON.parse(data.contents).feed as IFeed);
 }
 
-export function getPodcastEpsidoes() {}
+export async function getPodcastEpisodes(id: string): Promise<IEpisode[]> {
+  const data = await getJSON<AllCorsResponse>(
+    getAllCorsURL(getPodcastEpisodesUrl(id))
+  );
+  return JSON.parse(data.contents).results as IEpisode[];
+}
