@@ -91,6 +91,7 @@ export default function Episode() {
               trackName={episode.trackName}
               episodeUrl={episode.playbackUrl}
               descriptionHTMLstring={episode.descriptionHTMLstring}
+              cardProps={{ maxWidth: 600, height: "fit-content" }}
             />
           )}
         </Wrap>
