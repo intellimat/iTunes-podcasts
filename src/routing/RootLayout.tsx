@@ -4,8 +4,8 @@ import { Link as ReactRouterLink } from "react-router-dom";
 
 export default function RootLayout() {
   return (
-    <Stack margin={16} spacing={8}>
-      <Heading>
+    <Stack margin={8} spacing={4}>
+      <Heading size={"lg"}>
         <ChakraLink as={ReactRouterLink} to={"/"}>
           iTunes Podcasts
         </ChakraLink>
