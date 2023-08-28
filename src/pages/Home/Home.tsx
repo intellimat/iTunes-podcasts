@@ -2,9 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getPodcasts } from "../../services/podcasts/podcasts-services";
 import { useState, useMemo } from "react";
 import { getFilteredPodcasts } from "./query/filters";
-import { Spinner, Stack, Text, Input, Center, Flex } from "@chakra-ui/react";
+import { Stack, Text, Input, Center, Flex } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import PodcastHomeCard from "../../components/PodcastHomeCard";
+import Loading from "../../components/Loading";
+import PodcastHomeCard from "../../components/cards/PodcastHomeCard";
 
 export default function Home() {
   const { data, isLoading } = useQuery(["podcasts"], getPodcasts);
@@ -17,32 +18,33 @@ export default function Home() {
   }, [data, query]);
   return (
     <Stack>
-      <Flex
-        marginLeft={"auto"}
-        display={"flex"}
-        alignItems={"center"}
-        marginBottom={"3"}
-      >
-        {isLoading && <Spinner marginRight={"4"} />}
-        <Text
-          marginRight={"4"}
-          fontSize={"lg"}
-          bg={"#004f99"}
-          color={"white"}
-          borderRadius={10}
-          padding={2}
+      {isLoading && <Loading text="Loading podcasts, please wait" />}
+      {!isLoading && (
+        <Flex
+          marginLeft={"auto"}
+          display={"flex"}
+          alignItems={"center"}
+          marginBottom={"3"}
         >
-          {filteredPodcasts.length}
-        </Text>
-        {!isLoading && (
+          <Text
+            marginRight={"4"}
+            fontSize={"lg"}
+            bg={"#004f99"}
+            color={"white"}
+            borderRadius={10}
+            padding={2}
+          >
+            {filteredPodcasts.length}
+          </Text>
+
           <Input
             placeholder="Filter Podcasts..."
             size={"lg"}
             width={"md"}
             onChange={({ target: { value } }) => setQuery(value)}
           />
-        )}
-      </Flex>
+        </Flex>
+      )}
       <Flex
         justify={"space-between"}
         wrap={"wrap"}

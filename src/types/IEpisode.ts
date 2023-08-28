@@ -19,7 +19,7 @@ export interface IEpisode {
   collectionPrice?: number;
   trackPrice?: number;
   collectionHdPrice?: number;
-  releaseDate: Date;
+  releaseDate: string;
   collectionExplicitness?: string;
   trackExplicitness?: string;
   trackCount?: number;

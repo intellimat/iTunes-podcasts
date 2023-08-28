@@ -1,4 +1,6 @@
-import { IPodcast } from "../../types";
+import { getESdateFromTimestamp } from "../../converters/date";
+import { convertMillistoHMS as convertMillisToHMS } from "../../converters/time";
+import { IEpisode, IParsedEpisode, IPodcast } from "../../types";
 import { IFeed } from "../../types/IFeed";
 
 export function mapFeedToIPodcastList(feed: IFeed): IPodcast[] {
@@ -11,5 +13,15 @@ export function mapFeedToIPodcastList(feed: IFeed): IPodcast[] {
       label: entry.summary.label,
     },
     category: entry.category,
+  }));
+}
+
+export function mapIEpisodeListToIParsedEpisodeList(
+  episodes: IEpisode[]
+): IParsedEpisode[] {
+  return episodes.map((e) => ({
+    ...e,
+    parsedReleasedDate: getESdateFromTimestamp(e.releaseDate),
+    parsedDuration: convertMillisToHMS(e.trackTimeMillis),
   }));
 }
