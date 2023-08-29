@@ -60,7 +60,7 @@ export default function Home() {
                 }}
                 title={p.name.label}
                 subtitle={"Author: " + p.artist.label}
-                cardProps={{ width: "280px" }}
+                cardProps={{ width: "280px", bg: "#f2f2f2" }}
               />
             </ReactRouterLink>
           </Center>

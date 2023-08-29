@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useMemo } from "react";
-import { HStack, Spinner, Wrap, Text } from "@chakra-ui/react";
+import { VStack, Wrap } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import {
   getPodcastEpisodes,
@@ -10,6 +10,7 @@ import {
 import { IParsedEpisode } from "../types";
 import PodcastDetailsCard from "../components/cards/PodcastDetailsCard";
 import EpisodeCard from "../components/cards/EpisodeCard";
+import Loading from "../components/Loading";
 export default function Episode() {
   const { podcastId, episodeTrackId } = useParams<{
     podcastId: string;
@@ -57,20 +58,14 @@ export default function Episode() {
   }, [episodes, episodeTrackId]);
   return (
     <>
-      {(isLoadingEpisodes || isFetchingEpisodes) && (
-        <HStack>
-          <Text size="md" color={"#737373"}>
-            Loading Episodes{" "}
-          </Text>{" "}
-          <Spinner size={"sm"} color="#737373" />
-        </HStack>
-      )}
-      {(isLoadingPodcasts || isFetchingPodcasts) && (
-        <HStack>
-          <Text size="md">Loading Podcasts </Text>
-          <Spinner size={"sm"} />
-        </HStack>
-      )}
+      <VStack>
+        {(isLoadingEpisodes || isFetchingEpisodes) && (
+          <Loading text="Loading Episodes" />
+        )}
+        {(isLoadingPodcasts || isFetchingPodcasts) && (
+          <Loading text="Loading Podcasts " />
+        )}
+      </VStack>
       {episode !== null && (
         <Wrap spacing={"100px"}>
           {podcast !== null && (
