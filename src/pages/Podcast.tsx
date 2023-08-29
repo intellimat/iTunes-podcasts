@@ -5,7 +5,6 @@ import {
 } from "../services/podcasts/podcasts-services";
 import { useParams } from "react-router-dom";
 import { Flex, VStack } from "@chakra-ui/react";
-import { useMemo } from "react";
 import EpisodesTable from "../components/EpisodesTable";
 import Loading from "../components/Loading";
 import PodcastDetailsCard from "../components/cards/PodcastDetailsCard";
@@ -20,15 +19,12 @@ export default function Podcast() {
     getPodcastEpisodes(podcastId!)
   );
   const {
-    data: podcasts,
+    data: podcast,
     isLoading: isLoadingPodcasts,
     isFetching: isFetchingPodcasts,
-  } = useQuery(["podcasts"], () => getPodcasts());
-
-  const podcast = useMemo(
-    () => podcasts?.find((p) => p.id === podcastId) || null,
-    [podcasts, podcastId]
-  );
+  } = useQuery(["podcasts"], () => getPodcasts(), {
+    select: (data) => data?.find((p) => p.id === podcastId),
+  });
 
   return (
     <>
@@ -42,7 +38,7 @@ export default function Podcast() {
       </VStack>
       {podcastId !== undefined && (
         <Flex>
-          {podcast !== null && (
+          {podcast !== undefined && (
             <PodcastDetailsCard
               podcast={podcast}
               cardProps={{

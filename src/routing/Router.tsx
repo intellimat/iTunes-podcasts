@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home/Home";
 import Layout from "./RootLayout";
 import Podcast from "../pages/Podcast";
-import Episode from "../pages/Episode";
+import Episode from "../pages/Episode/Episode";
 import NoMatch from "../pages/NoMatch";
 
 export default function Router() {

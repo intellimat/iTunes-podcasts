@@ -1,61 +1,41 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { useMemo } from "react";
 import { VStack, Wrap } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import {
   getPodcastEpisodes,
   getPodcasts,
-} from "../services/podcasts/podcasts-services";
-import { IParsedEpisode } from "../types";
-import PodcastDetailsCard from "../components/cards/PodcastDetailsCard";
-import EpisodeCard from "../components/cards/EpisodeCard";
-import Loading from "../components/Loading";
+} from "../../services/podcasts/podcasts-services";
+import PodcastDetailsCard from "../../components/cards/PodcastDetailsCard";
+import EpisodeCard from "../../components/cards/EpisodeCard";
+import Loading from "../../components/Loading";
+import { mapEpisode } from "./utils/parsers";
 export default function Episode() {
   const { podcastId, episodeTrackId } = useParams<{
     podcastId: string;
     episodeTrackId: string;
   }>();
   const {
-    data: episodes,
+    data: episode,
     isLoading: isLoadingEpisodes,
     isFetching: isFetchingEpisodes,
-  } = useQuery(["podcast-" + podcastId + "-episodes"], () =>
-    getPodcastEpisodes(podcastId!)
+  } = useQuery(
+    ["podcast-" + podcastId + "-episodes"],
+    () => {
+      if (podcastId) {
+        return getPodcastEpisodes(podcastId);
+      }
+    },
+    { select: (data) => mapEpisode(data, episodeTrackId) }
   );
   const {
-    data: podcasts,
+    data: podcast,
     isLoading: isLoadingPodcasts,
     isFetching: isFetchingPodcasts,
-  } = useQuery(["podcasts"], getPodcasts);
-  const podcast = useMemo(
-    () => podcasts?.find((p) => p.id === podcastId) || null,
-    [podcasts, podcastId]
-  );
-  const episode = useMemo(() => {
-    let descriptionHTMLstring = "";
-    if (episodes === undefined) {
-      return null;
-    }
-    const foundEpisode = episodes.find(
-      (episode: IParsedEpisode) => episode.trackId === parseInt(episodeTrackId!)
-    );
-    if (foundEpisode === undefined) {
-      return null;
-    }
-    if (foundEpisode.description !== undefined) {
-      const descriptionElement = new window.DOMParser()
-        .parseFromString(foundEpisode.description, "text/html")
-        .querySelector("body");
-      descriptionHTMLstring =
-        descriptionElement === null ? "" : descriptionElement.innerHTML;
-    }
-    return {
-      trackName: foundEpisode.trackName,
-      descriptionHTMLstring,
-      playbackUrl: foundEpisode.episodeUrl,
-    };
-  }, [episodes, episodeTrackId]);
+  } = useQuery(["podcasts"], getPodcasts, {
+    select: (data) => data?.find((p) => p.id === podcastId),
+  });
+
   return (
     <>
       <VStack>
@@ -66,9 +46,9 @@ export default function Episode() {
           <Loading text="Loading Podcasts " />
         )}
       </VStack>
-      {episode !== null && (
+      {episode !== undefined && (
         <Wrap spacing={"100px"}>
-          {podcast !== null && (
+          {podcast !== undefined && (
             <ReactRouterLink to={"/podcast/" + podcastId}>
               <PodcastDetailsCard
                 podcast={podcast}
@@ -81,7 +61,7 @@ export default function Episode() {
               />
             </ReactRouterLink>
           )}
-          {episode !== null && (
+          {episode !== undefined && (
             <EpisodeCard
               trackName={episode.trackName}
               episodeUrl={episode.playbackUrl}
