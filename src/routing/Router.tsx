@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home/Home";
 import Layout from "./RootLayout";
-import Podcast from "../pages/Podcast";
+import Podcast from "../pages/Podcast/Podcast";
 import Episode from "../pages/Episode/Episode";
-import NoMatch from "../pages/NoMatch";
+import NotFound from "../pages/NotFound/NotFound";
 
 export default function Router() {
   return (
@@ -16,7 +16,7 @@ export default function Router() {
           element={<Episode />}
         />
       </Route>
-      <Route path="*" element={<NoMatch />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

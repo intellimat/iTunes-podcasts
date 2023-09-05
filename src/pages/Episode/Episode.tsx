@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { VStack, Wrap } from "@chakra-ui/react";
+import { VStack, Flex } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import {
   getPodcastEpisodes,
@@ -47,13 +47,18 @@ export default function Episode() {
         )}
       </VStack>
       {episode !== undefined && (
-        <Wrap spacing={"100px"}>
+        <Flex
+          wrap={"wrap"}
+          columnGap={20}
+          rowGap={10}
+          justifyContent={["space-evenly", "space-evenly", "flex-start"]}
+        >
           {podcast !== undefined && (
             <ReactRouterLink to={"/podcast/" + podcastId}>
               <PodcastDetailsCard
                 podcast={podcast}
                 cardProps={{
-                  maxWidth: "350px",
+                  width: [300, 300, 300, 300, 300, 400],
                   height: "fit-content",
                   padding: "16px",
                   bg: "#f2f2f2",
@@ -66,10 +71,13 @@ export default function Episode() {
               trackName={episode.trackName}
               episodeUrl={episode.playbackUrl}
               descriptionHTMLstring={episode.descriptionHTMLstring}
-              cardProps={{ maxWidth: 600, height: "fit-content" }}
+              cardProps={{
+                width: [300, 300, 300, 500, 800],
+                height: "fit-content",
+              }}
             />
           )}
-        </Wrap>
+        </Flex>
       )}
     </>
   );

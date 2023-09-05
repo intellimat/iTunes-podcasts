@@ -22,10 +22,14 @@ interface Props {
 
 export default function EpisodesTable({ podcastId, episodes }: Props) {
   return (
-    <VStack marginLeft={"20"}>
-      <Heading fontSize={"2xl"}>Episodes: {episodes.length}</Heading>
+    <VStack>
+      <Heading fontSize={"xl"}>Episodes</Heading>
       <TableContainer>
-        <Table size={"sm"} variant={"unstyled"}>
+        <Table
+          size={"sm"}
+          variant={"unstyled"}
+          width={[200, 200, 200, 500, 600]}
+        >
           <Thead>
             <Tr>
               <Th textTransform={"capitalize"}>
