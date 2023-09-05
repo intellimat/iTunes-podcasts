@@ -20,24 +20,25 @@ export default function Home() {
     <VStack>
       {isLoading && <Loading text="Loading podcasts, please wait" />}
       {!isLoading && (
-        <VStack>
-          <HStack marginLeft={[0, 0, "auto"]} marginBottom={4}>
+        <>
+          <HStack
+            marginBottom={4}
+            marginLeft={[0, 0, "auto"]}
+            width={[300, 300, 400]}
+          >
             <Text
-              marginRight={"4"}
+              marginRight={1}
               fontSize={"lg"}
               bg={"#004f99"}
               color={"white"}
               borderRadius={10}
-              padding={2}
+              padding={1.5}
             >
               {filteredPodcasts.length}
             </Text>
 
             <Input
               placeholder="Filter Podcasts..."
-              size={"lg"}
-              width={"md"}
-              maxWidth={"fit-content"}
               onChange={({ target: { value } }) => setQuery(value)}
             />
           </HStack>
@@ -62,13 +63,13 @@ export default function Home() {
                     }}
                     title={p.name.label}
                     subtitle={"Author: " + p.artist.label}
-                    cardProps={{ width: "280px", bg: "#f2f2f2" }}
+                    cardProps={{ width: 300, bg: "#f2f2f2" }}
                   />
                 </ReactRouterLink>
               </Center>
             ))}
           </Flex>
-        </VStack>
+        </>
       )}
     </VStack>
   );
