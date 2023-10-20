@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { VStack, Flex } from "@chakra-ui/react";
+import { VStack, Flex, Link as ChakraLink, Text } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import {
   getPodcastEpisodes,
@@ -10,6 +10,11 @@ import PodcastDetailsCard from "../../components/cards/PodcastDetailsCard";
 import EpisodeCard from "../../components/cards/EpisodeCard";
 import Loading from "../../components/Loading";
 import { mapEpisode } from "./utils/parsers";
+import { getPodcastRoutePath } from "../../routing/paths";
+import {
+  LOADING_EPISODES_MESSAGE,
+  LOADING_PODCASTS_MESSAGE,
+} from "../../messages/loading";
 export default function Episode() {
   const { podcastId, episodeTrackId } = useParams<{
     podcastId: string;
@@ -39,11 +44,21 @@ export default function Episode() {
   return (
     <>
       <VStack>
+        {podcastId && (
+          <ChakraLink
+            as={ReactRouterLink}
+            to={getPodcastRoutePath(podcastId)}
+            width={"fit-content"}
+            marginRight={"auto"}
+          >
+            <Text>Go back</Text>
+          </ChakraLink>
+        )}
         {(isLoadingEpisodes || isFetchingEpisodes) && (
-          <Loading text="Loading Episodes" />
+          <Loading text={LOADING_EPISODES_MESSAGE} />
         )}
         {(isLoadingPodcasts || isFetchingPodcasts) && (
-          <Loading text="Loading Podcasts " />
+          <Loading text={LOADING_PODCASTS_MESSAGE} />
         )}
       </VStack>
       {episode !== undefined && (

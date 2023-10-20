@@ -6,6 +6,7 @@ import { Text, Input, Center, Flex, HStack, VStack } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import Loading from "../../components/Loading";
 import PodcastHomeCard from "../../components/cards/PodcastHomeCard";
+import { LOADING_PODCASTS_MESSAGE } from "../../messages/loading";
 
 export default function Home() {
   const { data, isLoading } = useQuery(["podcasts"], getPodcasts);
@@ -18,7 +19,7 @@ export default function Home() {
   }, [data, query]);
   return (
     <VStack>
-      {isLoading && <Loading text="Loading podcasts, please wait" />}
+      {isLoading && <Loading text={LOADING_PODCASTS_MESSAGE} />}
       {!isLoading && (
         <>
           <HStack

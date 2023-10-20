@@ -19,7 +19,7 @@ export function mapFeedToIPodcastList(feed: IFeed): IPodcast[] {
 export function mapIEpisodeListToIParsedEpisodeList(
   episodes: IEpisode[]
 ): IParsedEpisode[] {
-  return episodes.map((e) => ({
+  return episodes.slice(1).map((e) => ({
     ...e,
     parsedReleasedDate: getESdateFromTimestamp(e.releaseDate),
     parsedDuration: convertMillisToHMS(e.trackTimeMillis),

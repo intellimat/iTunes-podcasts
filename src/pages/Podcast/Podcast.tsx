@@ -3,11 +3,15 @@ import {
   getPodcastEpisodes,
   getPodcasts,
 } from "../../services/podcasts/podcasts-services";
-import { useParams } from "react-router-dom";
-import { Flex, VStack } from "@chakra-ui/react";
+import { Link as ReactRouterLink, useParams } from "react-router-dom";
+import { Flex, VStack, Link as ChakraLink, Text } from "@chakra-ui/react";
 import EpisodesTable from "../../components/EpisodesTable";
 import Loading from "../../components/Loading";
 import PodcastDetailsCard from "../../components/cards/PodcastDetailsCard";
+import {
+  LOADING_EPISODES_MESSAGE,
+  LOADING_PODCASTS_MESSAGE,
+} from "../../messages/loading";
 
 export default function Podcast() {
   const { podcastId } = useParams<{ podcastId: string }>();
@@ -29,11 +33,19 @@ export default function Podcast() {
   return (
     <>
       <VStack>
+        <ChakraLink
+          as={ReactRouterLink}
+          to={"/"}
+          width={"fit-content"}
+          marginRight={"auto"}
+        >
+          <Text>Go back</Text>
+        </ChakraLink>
         {(isLoadingEpisodes || isFetchingEpisodes) && (
-          <Loading text="Loading Episodes" />
+          <Loading text={LOADING_EPISODES_MESSAGE} />
         )}
         {(isLoadingPodcasts || isFetchingPodcasts) && (
-          <Loading text="Loading Podcasts" />
+          <Loading text={LOADING_PODCASTS_MESSAGE} />
         )}
       </VStack>
       {podcastId !== undefined && (
