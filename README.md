@@ -2,6 +2,8 @@
 
 An app that lets you view and play top 100 us podcasts from iTunes.
 
+Visit: https://itunes-podcasts-pi.vercel.app
+
 ## Engines
 
 - Node ^18.14.0
