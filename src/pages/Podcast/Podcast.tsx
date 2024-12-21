@@ -38,13 +38,10 @@ export default function Podcast() {
   return (
     <>
       <VStack>
-        <ChakraLink
-          as={ReactRouterLink}
-          to={"/"}
-          width={"fit-content"}
-          marginRight={"auto"}
-        >
-          <Text>Go back</Text>
+        <ChakraLink asChild width={"fit-content"} marginRight={"auto"}>
+          <ReactRouterLink to={"/"}>
+            <Text>Go back</Text>
+          </ReactRouterLink>
         </ChakraLink>
         {(isLoadingEpisodes || isFetchingEpisodes) && (
           <Loading text={LOADING_EPISODES_MESSAGE} />
@@ -68,7 +65,7 @@ export default function Podcast() {
           {podcast !== undefined && (
             <PodcastDetailsCard
               podcast={podcast}
-              cardProps={{
+              styleProps={{
                 width: [300, 300, 300, 300, 300, 400],
                 height: "fit-content",
                 padding: "16px",

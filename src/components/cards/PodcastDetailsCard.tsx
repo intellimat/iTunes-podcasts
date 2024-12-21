@@ -1,28 +1,28 @@
 import {
   Card,
-  CardProps,
   Center,
   Stack,
-  StackDivider,
+  StackSeparator,
   Image,
   Box,
   Heading,
   Text,
+  CardRootProps,
 } from "@chakra-ui/react";
 import { IPodcast } from "../../types";
 
 interface Props {
   podcast: IPodcast;
-  cardProps?: CardProps;
+  styleProps?: any;
 }
 
 export default function PodcastDetailsCard({
   podcast: { artist, image, name, summary },
-  cardProps,
+  styleProps,
 }: Props) {
   return (
-    <Card {...cardProps}>
-      <Stack divider={<StackDivider />} spacing={"16px"}>
+    <Card.Root style={styleProps}>
+      <Stack separator={<StackSeparator />} maxWidth={400}>
         <Box>
           <Center>
             {image !== null && (
@@ -43,11 +43,10 @@ export default function PodcastDetailsCard({
         <Box>
           <Heading size={"xs"}>Description: </Heading>
           <Text pt={"2"} fontSize={"sm"} fontStyle={"italic"}>
-            {" "}
             {summary.label}
           </Text>
         </Box>
       </Stack>
-    </Card>
+    </Card.Root>
   );
 }
