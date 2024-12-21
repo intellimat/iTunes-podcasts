@@ -9,7 +9,11 @@ import PodcastHomeCard from "../../components/cards/PodcastHomeCard";
 import { LOADING_PODCASTS_MESSAGE } from "../../messages/loading";
 
 export default function Home() {
-  const { data, isLoading } = useQuery(["podcasts"], getPodcasts);
+  const { data, isLoading } = useQuery({
+    queryKey: ["podcasts"],
+    queryFn: getPodcasts,
+  });
+
   const [query, setQuery] = useState("");
   const filteredPodcasts = useMemo(() => {
     if (data === undefined) {

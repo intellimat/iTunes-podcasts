@@ -15,6 +15,7 @@ import {
   LOADING_EPISODES_MESSAGE,
   LOADING_PODCASTS_MESSAGE,
 } from "../../messages/loading";
+import { IPodcast } from "../../types";
 export default function Episode() {
   const { podcastId, episodeTrackId } = useParams<{
     podcastId: string;
@@ -24,21 +25,24 @@ export default function Episode() {
     data: episode,
     isLoading: isLoadingEpisodes,
     isFetching: isFetchingEpisodes,
-  } = useQuery(
-    ["podcast-" + podcastId + "-episodes"],
-    () => {
+  } = useQuery({
+    queryKey: ["podcast-" + podcastId + "-episodes"],
+    queryFn: () => {
       if (podcastId) {
         return getPodcastEpisodes(podcastId);
       }
     },
-    { select: (data) => mapEpisode(data, episodeTrackId) }
-  );
+    select: (data) => mapEpisode(data, episodeTrackId),
+  });
   const {
     data: podcast,
     isLoading: isLoadingPodcasts,
     isFetching: isFetchingPodcasts,
-  } = useQuery(["podcasts"], getPodcasts, {
-    select: (data) => data?.find((p) => p.id === podcastId),
+  } = useQuery({
+    queryKey: ["podcasts"],
+    queryFn: getPodcasts,
+    select: (data: IPodcast[]) =>
+      data?.find((p: IPodcast) => p.id === podcastId),
   });
 
   return (
