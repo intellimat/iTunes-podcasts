@@ -5,16 +5,14 @@ interface Props {
   trackName: string;
   descriptionHTMLstring: string;
   episodeUrl?: string;
-  styleProps?: any;
 }
 const EpisodeCard = ({
   trackName,
   descriptionHTMLstring,
   episodeUrl,
-  styleProps,
 }: Props) => {
   return (
-    <Card.Root style={styleProps}>
+    <Card.Root>
       <CardBody>
         <VStack mt="6" gap="3">
           <Heading size="md" marginRight={"auto"}>

@@ -62,17 +62,7 @@ export default function Podcast() {
             "flex-start",
           ]}
         >
-          {podcast !== undefined && (
-            <PodcastDetailsCard
-              podcast={podcast}
-              styleProps={{
-                width: [300, 300, 300, 300, 300, 400],
-                height: "fit-content",
-                padding: "16px",
-                bg: "#f2f2f2",
-              }}
-            />
-          )}
+          {podcast !== undefined && <PodcastDetailsCard podcast={podcast} />}
           {episodes !== undefined && (
             <EpisodesTable podcastId={podcastId} episodes={episodes} />
           )}

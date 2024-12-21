@@ -71,15 +71,7 @@ export default function Episode() {
         >
           {podcast !== undefined && (
             <ReactRouterLink to={"/podcast/" + podcastId}>
-              <PodcastDetailsCard
-                podcast={podcast}
-                styleProps={{
-                  width: [300, 300, 300, 300, 300, 400],
-                  height: "fit-content",
-                  padding: "16px",
-                  bg: "#f2f2f2",
-                }}
-              />
+              <PodcastDetailsCard podcast={podcast} />
             </ReactRouterLink>
           )}
           {episode !== undefined && (
@@ -87,10 +79,6 @@ export default function Episode() {
               trackName={episode.trackName}
               episodeUrl={episode.playbackUrl}
               descriptionHTMLstring={episode.descriptionHTMLstring}
-              styleProps={{
-                width: [300, 300, 300, 500, 800],
-                height: "fit-content",
-              }}
             />
           )}
         </Flex>

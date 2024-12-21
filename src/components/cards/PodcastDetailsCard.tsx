@@ -7,21 +7,18 @@ import {
   Box,
   Heading,
   Text,
-  CardRootProps,
 } from "@chakra-ui/react";
 import { IPodcast } from "../../types";
 
 interface Props {
   podcast: IPodcast;
-  styleProps?: any;
 }
 
 export default function PodcastDetailsCard({
   podcast: { artist, image, name, summary },
-  styleProps,
 }: Props) {
   return (
-    <Card.Root style={styleProps}>
+    <Card.Root>
       <Stack separator={<StackSeparator />} maxWidth={400}>
         <Box>
           <Center>
