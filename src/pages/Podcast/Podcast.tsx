@@ -12,34 +12,58 @@ import {
   GridItem,
 } from "@chakra-ui/react";
 import EpisodePreviewCard from "../../components/cards/EpisodeCardPreviewCard";
-import Loading from "../../components/Loading";
 import PodcastDetailsCard from "../../components/cards/PodcastDetailsCard";
 import {
   LOADING_EPISODES_MESSAGE,
   LOADING_PODCASTS_MESSAGE,
 } from "../../messages/loading";
 import { IPodcast } from "../../types";
+import { useMemo, useRef } from "react";
+import { toaster } from "../../components/ui/toaster";
 
 export default function Podcast() {
   const { podcastId } = useParams<{ podcastId: string }>();
-  const {
-    data: episodes,
-    isLoading: isLoadingEpisodes,
-    isFetching: isFetchingEpisodes,
-  } = useQuery({
+  const { data: episodes, isLoading: isLoadingEpisodes } = useQuery({
     queryKey: ["podcast-" + podcastId + "-episodes"],
     queryFn: () => getPodcastEpisodes(podcastId!),
   });
-  const {
-    data: podcast,
-    isLoading: isLoadingPodcasts,
-    isFetching: isFetchingPodcasts,
-  } = useQuery({
+  const { data: podcast, isLoading: isLoadingPodcasts } = useQuery({
     queryKey: ["podcasts"],
     queryFn: getPodcasts,
     select: (data: IPodcast[]) =>
       data?.find((p: IPodcast) => p.id === podcastId),
   });
+
+  const loadingPodcastsToasterRef = useRef<string | undefined>(undefined);
+  const loadingEpisodesToasterRef = useRef<string | undefined>(undefined);
+
+  useMemo(() => {
+    if (isLoadingPodcasts) {
+      loadingPodcastsToasterRef.current = toaster.create({
+        title: LOADING_PODCASTS_MESSAGE,
+        type: "info",
+      });
+    } else if (
+      loadingPodcastsToasterRef.current &&
+      toaster.isVisible(loadingPodcastsToasterRef.current)
+    ) {
+      toaster.dismiss(loadingPodcastsToasterRef.current);
+      loadingPodcastsToasterRef.current = undefined;
+    }
+
+    if (isLoadingEpisodes) {
+      loadingEpisodesToasterRef.current = toaster.create({
+        title: LOADING_EPISODES_MESSAGE,
+        type: "info",
+      });
+    } else if (
+      loadingEpisodesToasterRef.current &&
+      toaster.isVisible(loadingEpisodesToasterRef.current)
+    ) {
+      toaster.dismiss(loadingEpisodesToasterRef.current);
+      loadingEpisodesToasterRef.current = undefined;
+    }
+  }, [isLoadingPodcasts, isLoadingEpisodes]);
 
   return (
     <>
@@ -49,12 +73,6 @@ export default function Podcast() {
             <Text>Go back</Text>
           </ReactRouterLink>
         </ChakraLink>
-        {(isLoadingEpisodes || isFetchingEpisodes) && (
-          <Loading text={LOADING_EPISODES_MESSAGE} />
-        )}
-        {(isLoadingPodcasts || isFetchingPodcasts) && (
-          <Loading text={LOADING_PODCASTS_MESSAGE} />
-        )}
       </VStack>
       {podcastId !== undefined && (
         <Grid
