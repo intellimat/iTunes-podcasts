@@ -50,7 +50,10 @@ Props) => (
             paddingX={2}
             paddingY={1}
             borderWidth={1}
-            _hover={{ textDecoration: "none", backgroundColor: "bg.muted" }}
+            _hover={{
+              textDecoration: "none",
+              backgroundColor: "ButtonHighlight",
+            }}
             borderBlockStyle={"thin"}
           >
             <ReactRouterLink to={getEpisodeRoutePath(podcastId, trackId)}>

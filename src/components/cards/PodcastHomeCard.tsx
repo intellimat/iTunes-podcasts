@@ -1,12 +1,4 @@
-import {
-  Card,
-  CardBody,
-  Heading,
-  Stack,
-  Text,
-  Image,
-  Center,
-} from "@chakra-ui/react";
+import { Card, Heading, Stack, Text, Image, Center } from "@chakra-ui/react";
 
 interface Props {
   img: {
@@ -24,7 +16,7 @@ export default function PodcastHomeCard({
 }: Props) {
   return (
     <Card.Root height={"320px"}>
-      <CardBody>
+      <Card.Body>
         <Center>
           <Image src={src} alt={alt || "Alt not available"} />
         </Center>
@@ -34,7 +26,7 @@ export default function PodcastHomeCard({
           </Heading>
           <Text lineClamp={2}>{subtitle}</Text>
         </Stack>
-      </CardBody>
+      </Card.Body>
     </Card.Root>
   );
 }
