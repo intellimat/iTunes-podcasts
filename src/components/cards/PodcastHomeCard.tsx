@@ -6,8 +6,8 @@ import {
   Text,
   Image,
   Center,
-  CardProps,
 } from "@chakra-ui/react";
+
 interface Props {
   img: {
     src: string;
@@ -15,25 +15,26 @@ interface Props {
   };
   title: string;
   subtitle: string;
-  cardProps?: CardProps;
 }
+
 export default function PodcastHomeCard({
-  cardProps,
   img: { src, alt },
   title,
   subtitle,
 }: Props) {
   return (
-    <Card {...cardProps}>
+    <Card.Root height={"320px"}>
       <CardBody>
         <Center>
           <Image src={src} alt={alt || "Alt not available"} />
         </Center>
-        <Stack mt="6" spacing={"3"}>
-          <Heading size={"md"}>{title}</Heading>
-          <Text>{subtitle}</Text>
+        <Stack mt="6" gap={"3"}>
+          <Heading lineClamp={1} size={"md"}>
+            {title}
+          </Heading>
+          <Text lineClamp={2}>{subtitle}</Text>
         </Stack>
       </CardBody>
-    </Card>
+    </Card.Root>
   );
 }

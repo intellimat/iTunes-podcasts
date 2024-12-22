@@ -1,39 +1,28 @@
-import {
-  Card,
-  CardBody,
-  VStack,
-  Heading,
-  Text,
-  CardProps,
-} from "@chakra-ui/react";
+import { Card, CardBody, VStack } from "@chakra-ui/react";
 import HTMLComponent from "../HTMLcomponent";
 
 interface Props {
   trackName: string;
   descriptionHTMLstring: string;
   episodeUrl?: string;
-  cardProps?: CardProps;
 }
 const EpisodeCard = ({
   trackName,
   descriptionHTMLstring,
   episodeUrl,
-  cardProps,
 }: Props) => {
   return (
-    <Card {...cardProps}>
+    <Card.Root>
+      <Card.Header fontWeight={"bold"} marginRight={"auto"}>
+        {trackName}
+      </Card.Header>
       <CardBody>
-        <VStack mt="6" spacing="3">
-          <Heading size="md" marginRight={"auto"}>
-            {trackName}
-          </Heading>
-          <Text maxWidth={750}>
-            <HTMLComponent htmlString={descriptionHTMLstring} />
-          </Text>
+        <VStack gap="3">
+          <HTMLComponent htmlString={descriptionHTMLstring} />
           {episodeUrl !== undefined && <audio controls src={episodeUrl} />}
         </VStack>
       </CardBody>
-    </Card>
+    </Card.Root>
   );
 };
 

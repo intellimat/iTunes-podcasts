@@ -7,7 +7,7 @@ interface Props {
 export default function Loading({ text }: Props) {
   return (
     <HStack>
-      <Text size={"md"} color={"#737373"}>
+      <Text fontSize={"md"} color={"#737373"}>
         {text || ""}
       </Text>{" "}
       <Spinner size={"sm"} color={"#737373"} />

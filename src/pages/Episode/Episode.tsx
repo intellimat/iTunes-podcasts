@@ -1,6 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { VStack, Flex, Link as ChakraLink, Text } from "@chakra-ui/react";
+import {
+  VStack,
+  Link as ChakraLink,
+  Text,
+  Grid,
+  GridItem,
+} from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import {
   getPodcastEpisodes,
@@ -49,13 +55,10 @@ export default function Episode() {
     <>
       <VStack>
         {podcastId && (
-          <ChakraLink
-            as={ReactRouterLink}
-            to={getPodcastRoutePath(podcastId)}
-            width={"fit-content"}
-            marginRight={"auto"}
-          >
-            <Text>Go back</Text>
+          <ChakraLink asChild width={"fit-content"} marginRight={"auto"}>
+            <ReactRouterLink to={getPodcastRoutePath(podcastId)}>
+              <Text>Go back</Text>
+            </ReactRouterLink>
           </ChakraLink>
         )}
         {(isLoadingEpisodes || isFetchingEpisodes) && (
@@ -66,37 +69,24 @@ export default function Episode() {
         )}
       </VStack>
       {episode !== undefined && (
-        <Flex
-          wrap={"wrap"}
-          columnGap={20}
-          rowGap={10}
-          justifyContent={["space-evenly", "space-evenly", "flex-start"]}
-        >
+        <Grid templateColumns={["1fr", "1fr", "1fr 3fr"]} gap={6}>
           {podcast !== undefined && (
-            <ReactRouterLink to={"/podcast/" + podcastId}>
-              <PodcastDetailsCard
-                podcast={podcast}
-                cardProps={{
-                  width: [300, 300, 300, 300, 300, 400],
-                  height: "fit-content",
-                  padding: "16px",
-                  bg: "#f2f2f2",
-                }}
-              />
-            </ReactRouterLink>
+            <GridItem>
+              <ReactRouterLink to={"/podcast/" + podcastId}>
+                <PodcastDetailsCard podcast={podcast} />
+              </ReactRouterLink>
+            </GridItem>
           )}
           {episode !== undefined && (
-            <EpisodeCard
-              trackName={episode.trackName}
-              episodeUrl={episode.playbackUrl}
-              descriptionHTMLstring={episode.descriptionHTMLstring}
-              cardProps={{
-                width: [300, 300, 300, 500, 800],
-                height: "fit-content",
-              }}
-            />
+            <GridItem>
+              <EpisodeCard
+                trackName={episode.trackName}
+                episodeUrl={episode.playbackUrl}
+                descriptionHTMLstring={episode.descriptionHTMLstring}
+              />
+            </GridItem>
           )}
-        </Flex>
+        </Grid>
       )}
     </>
   );

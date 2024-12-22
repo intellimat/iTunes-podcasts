@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getPodcasts } from "../../services/podcasts/podcasts-services";
 import { useState, useMemo } from "react";
 import { getFilteredPodcasts } from "./query/filters";
-import { Text, Input, Center, Flex, HStack, VStack } from "@chakra-ui/react";
+import { Text, Input, HStack, VStack, SimpleGrid } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import Loading from "../../components/Loading";
 import PodcastHomeCard from "../../components/cards/PodcastHomeCard";
@@ -27,16 +27,17 @@ export default function Home() {
       {!isLoading && (
         <>
           <HStack
-            marginBottom={4}
-            marginLeft={[0, 0, "auto"]}
-            width={[300, 300, 400]}
+            width={["100%", "60%", "35%", "25%"]}
+            marginTop={1}
+            marginBottom={2}
+            marginLeft={["unset", "unset", "auto"]}
+            marginRight={["auto", "auto", "unset"]}
           >
             <Text
-              marginRight={1}
               fontSize={"lg"}
               bg={"#004f99"}
               color={"white"}
-              borderRadius={10}
+              borderRadius={4}
               padding={1.5}
             >
               {filteredPodcasts.length}
@@ -47,33 +48,19 @@ export default function Home() {
               onChange={({ target: { value } }) => setQuery(value)}
             />
           </HStack>
-          <Flex
-            justifyContent={[
-              "space-evenly",
-              "space-evenly",
-              "space-evenly",
-              "space-between",
-            ]}
-            wrap={"wrap"}
-            columnGap={8}
-            rowGap={8}
-            alignItems={"baseline"}
-          >
+          <SimpleGrid columns={[1, 2, 3, 4]} gap="4">
             {filteredPodcasts.map((p) => (
-              <Center key={p.id}>
-                <ReactRouterLink to={"/podcast/" + p.id}>
-                  <PodcastHomeCard
-                    img={{
-                      src: p.image.label,
-                    }}
-                    title={p.name.label}
-                    subtitle={"Author: " + p.artist.label}
-                    cardProps={{ width: 300, bg: "#f2f2f2" }}
-                  />
-                </ReactRouterLink>
-              </Center>
+              <ReactRouterLink key={p.id} to={"/podcast/" + p.id}>
+                <PodcastHomeCard
+                  img={{
+                    src: p.image.label,
+                  }}
+                  title={p.name.label}
+                  subtitle={"Author: " + p.artist.label}
+                />
+              </ReactRouterLink>
             ))}
-          </Flex>
+          </SimpleGrid>
         </>
       )}
     </VStack>

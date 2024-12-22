@@ -1,9 +1,8 @@
 import {
   Card,
-  CardProps,
   Center,
   Stack,
-  StackDivider,
+  StackSeparator,
   Image,
   Box,
   Heading,
@@ -13,16 +12,14 @@ import { IPodcast } from "../../types";
 
 interface Props {
   podcast: IPodcast;
-  cardProps?: CardProps;
 }
 
 export default function PodcastDetailsCard({
   podcast: { artist, image, name, summary },
-  cardProps,
 }: Props) {
   return (
-    <Card {...cardProps}>
-      <Stack divider={<StackDivider />} spacing={"16px"}>
+    <Card.Root width={["100%", "100%", "300px"]}>
+      <Stack separator={<StackSeparator />}>
         <Box>
           <Center>
             {image !== null && (
@@ -34,20 +31,19 @@ export default function PodcastDetailsCard({
             )}
           </Center>
         </Box>
-        <Box>
-          <Heading size={"xs"}> {name.label}</Heading>
+        <Box paddingTop={4} paddingBottom={2} paddingX={4}>
+          <Heading size={"md"}> {name.label}</Heading>
           <Text pt={"2"} fontSize={"sm"}>
             by {artist.label}
           </Text>
         </Box>
-        <Box>
-          <Heading size={"xs"}>Description: </Heading>
-          <Text pt={"2"} fontSize={"sm"} fontStyle={"italic"}>
-            {" "}
+        <Box paddingX={4} paddingBottom={4} paddingTop={2}>
+          <Heading size={"sm"}>Description: </Heading>
+          <Text pt={"2"} fontSize={"sm"} wordWrap={"break-word"}>
             {summary.label}
           </Text>
         </Box>
       </Stack>
-    </Card>
+    </Card.Root>
   );
 }
