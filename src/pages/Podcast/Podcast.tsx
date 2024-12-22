@@ -58,6 +58,7 @@ export default function Podcast() {
       </VStack>
       {podcastId !== undefined && (
         <Grid
+          overflow={"hidden"}
           templateColumns={[
             "minmax(0, 1fr)",
             "minmax(0, 1fr)",
