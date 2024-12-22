@@ -18,8 +18,8 @@ export default function PodcastDetailsCard({
   podcast: { artist, image, name, summary },
 }: Props) {
   return (
-    <Card.Root>
-      <Stack separator={<StackSeparator />} maxWidth={400}>
+    <Card.Root width={["100%", "100%", "300px"]}>
+      <Stack separator={<StackSeparator />}>
         <Box>
           <Center>
             {image !== null && (
@@ -31,15 +31,15 @@ export default function PodcastDetailsCard({
             )}
           </Center>
         </Box>
-        <Box>
-          <Heading size={"xs"}> {name.label}</Heading>
+        <Box paddingTop={4} paddingBottom={2} paddingX={4}>
+          <Heading size={"md"}> {name.label}</Heading>
           <Text pt={"2"} fontSize={"sm"}>
             by {artist.label}
           </Text>
         </Box>
-        <Box>
-          <Heading size={"xs"}>Description: </Heading>
-          <Text pt={"2"} fontSize={"sm"} fontStyle={"italic"}>
+        <Box paddingX={4} paddingBottom={4} paddingTop={2}>
+          <Heading size={"sm"}>Description: </Heading>
+          <Text pt={"2"} fontSize={"sm"} wordWrap={"break-word"}>
             {summary.label}
           </Text>
         </Box>

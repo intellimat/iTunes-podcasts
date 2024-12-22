@@ -4,8 +4,14 @@ import {
   getPodcasts,
 } from "../../services/podcasts/podcasts-services";
 import { Link as ReactRouterLink, useParams } from "react-router-dom";
-import { Flex, VStack, Link as ChakraLink, Text } from "@chakra-ui/react";
-import EpisodesTable from "../../components/EpisodesTable";
+import {
+  VStack,
+  Link as ChakraLink,
+  Text,
+  Grid,
+  GridItem,
+} from "@chakra-ui/react";
+import EpisodePreviewCard from "../../components/cards/EpisodeCardPreviewCard";
 import Loading from "../../components/Loading";
 import PodcastDetailsCard from "../../components/cards/PodcastDetailsCard";
 import {
@@ -51,22 +57,30 @@ export default function Podcast() {
         )}
       </VStack>
       {podcastId !== undefined && (
-        <Flex
-          wrap={"wrap"}
-          columnGap={20}
-          rowGap={10}
-          justifyContent={[
-            "space-evenly",
-            "space-evenly",
-            "flex-start",
-            "flex-start",
-          ]}
-        >
-          {podcast !== undefined && <PodcastDetailsCard podcast={podcast} />}
-          {episodes !== undefined && (
-            <EpisodesTable podcastId={podcastId} episodes={episodes} />
+        <Grid templateColumns={["1fr", "1fr", "1fr 3fr"]} gap={6}>
+          {podcast !== undefined && (
+            <GridItem>
+              <PodcastDetailsCard podcast={podcast} />
+            </GridItem>
           )}
-        </Flex>
+          <GridItem>
+            <VStack>
+              {episodes !== undefined &&
+                episodes.map((e) => (
+                  <EpisodePreviewCard
+                    key={e.trackId}
+                    title={e.trackName}
+                    description={e.description || ""}
+                    date={e.parsedReleasedDate}
+                    time={e.parsedDuration || ""}
+                    imageUrl={""}
+                    podcastId={podcastId}
+                    trackId={e.trackId}
+                  />
+                ))}
+            </VStack>
+          </GridItem>
+        </Grid>
       )}
     </>
   );
