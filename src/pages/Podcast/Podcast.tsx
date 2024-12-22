@@ -57,7 +57,14 @@ export default function Podcast() {
         )}
       </VStack>
       {podcastId !== undefined && (
-        <Grid templateColumns={["1fr", "1fr", "1fr 3fr"]} gap={6}>
+        <Grid
+          templateColumns={[
+            "minmax(0, 1fr)",
+            "minmax(0, 1fr)",
+            "minmax(0, 1fr) 3fr",
+          ]}
+          gap={6}
+        >
           {podcast !== undefined && (
             <GridItem>
               <PodcastDetailsCard podcast={podcast} />

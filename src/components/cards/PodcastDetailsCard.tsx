@@ -18,7 +18,7 @@ export default function PodcastDetailsCard({
   podcast: { artist, image, name, summary },
 }: Props) {
   return (
-    <Card.Root width={["100%", "100%", "300px"]}>
+    <Card.Root>
       <Stack separator={<StackSeparator />}>
         <Box>
           <Center>
