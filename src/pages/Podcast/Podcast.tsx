@@ -10,6 +10,7 @@ import {
   Text,
   Grid,
   GridItem,
+  Center,
 } from "@chakra-ui/react";
 import EpisodePreviewCard from "../../components/cards/EpisodeCardPreviewCard";
 import PodcastDetailsCard from "../../components/cards/PodcastDetailsCard";
@@ -18,8 +19,7 @@ import {
   LOADING_PODCASTS_MESSAGE,
 } from "../../messages/loading";
 import { IPodcast } from "../../types";
-import { useMemo, useRef } from "react";
-import { toaster } from "../../components/ui/toaster";
+import Loading from "../../components/Loading";
 
 export default function Podcast() {
   const { podcastId } = useParams<{ podcastId: string }>();
@@ -33,37 +33,6 @@ export default function Podcast() {
     select: (data: IPodcast[]) =>
       data?.find((p: IPodcast) => p.id === podcastId),
   });
-
-  const loadingPodcastsToasterRef = useRef<string | undefined>(undefined);
-  const loadingEpisodesToasterRef = useRef<string | undefined>(undefined);
-
-  useMemo(() => {
-    if (isLoadingPodcasts) {
-      loadingPodcastsToasterRef.current = toaster.create({
-        title: LOADING_PODCASTS_MESSAGE,
-        type: "info",
-      });
-    } else if (
-      loadingPodcastsToasterRef.current &&
-      toaster.isVisible(loadingPodcastsToasterRef.current)
-    ) {
-      toaster.dismiss(loadingPodcastsToasterRef.current);
-      loadingPodcastsToasterRef.current = undefined;
-    }
-
-    if (isLoadingEpisodes) {
-      loadingEpisodesToasterRef.current = toaster.create({
-        title: LOADING_EPISODES_MESSAGE,
-        type: "info",
-      });
-    } else if (
-      loadingEpisodesToasterRef.current &&
-      toaster.isVisible(loadingEpisodesToasterRef.current)
-    ) {
-      toaster.dismiss(loadingEpisodesToasterRef.current);
-      loadingEpisodesToasterRef.current = undefined;
-    }
-  }, [isLoadingPodcasts, isLoadingEpisodes]);
 
   return (
     <>
@@ -86,25 +55,37 @@ export default function Podcast() {
         >
           {podcast !== undefined && (
             <GridItem>
-              <PodcastDetailsCard podcast={podcast} />
+              {isLoadingPodcasts && (
+                <Center>
+                  <Loading text={LOADING_PODCASTS_MESSAGE} />
+                </Center>
+              )}
+              {!isLoadingPodcasts && <PodcastDetailsCard podcast={podcast} />}
             </GridItem>
           )}
           <GridItem>
-            <VStack>
-              {episodes !== undefined &&
-                episodes.map((e) => (
-                  <EpisodePreviewCard
-                    key={e.trackId}
-                    title={e.trackName}
-                    description={e.description || ""}
-                    date={e.parsedReleasedDate}
-                    time={e.parsedDuration || ""}
-                    imageUrl={""}
-                    podcastId={podcastId}
-                    trackId={e.trackId}
-                  />
-                ))}
-            </VStack>
+            {isLoadingEpisodes && (
+              <Center>
+                <Loading text={LOADING_EPISODES_MESSAGE} />
+              </Center>
+            )}
+            {!isLoadingEpisodes && (
+              <VStack>
+                {episodes !== undefined &&
+                  episodes.map((e) => (
+                    <EpisodePreviewCard
+                      key={e.trackId}
+                      title={e.trackName}
+                      description={e.description || ""}
+                      date={e.parsedReleasedDate}
+                      time={e.parsedDuration || ""}
+                      imageUrl={""}
+                      podcastId={podcastId}
+                      trackId={e.trackId}
+                    />
+                  ))}
+              </VStack>
+            )}
           </GridItem>
         </Grid>
       )}
