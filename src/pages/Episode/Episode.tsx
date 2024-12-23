@@ -1,12 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import {
-  VStack,
-  Link as ChakraLink,
-  Text,
-  Grid,
-  GridItem,
-} from "@chakra-ui/react";
+import { VStack, Grid, GridItem, Center, HStack, Text } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import {
   getPodcastEpisodes,
@@ -21,8 +15,12 @@ import {
   LOADING_PODCASTS_MESSAGE,
 } from "../../messages/loading";
 import { IPodcast } from "../../types";
-import { toaster } from "../../components/ui/toaster";
-import { useMemo, useRef } from "react";
+import Loading from "../../components/Loading";
+import {
+  BreadcrumbCurrentLink,
+  BreadcrumbRoot,
+} from "../../components/ui/breadcrumb";
+
 export default function Episode() {
   const { podcastId, episodeTrackId } = useParams<{
     podcastId: string;
@@ -44,64 +42,51 @@ export default function Episode() {
       data?.find((p: IPodcast) => p.id === podcastId),
   });
 
-  const loadingPodcastsToasterRef = useRef<string | undefined>(undefined);
-  const loadingEpisodesToasterRef = useRef<string | undefined>(undefined);
-
-  useMemo(() => {
-    if (isLoadingPodcasts) {
-      loadingPodcastsToasterRef.current = toaster.create({
-        title: LOADING_PODCASTS_MESSAGE,
-        type: "info",
-      });
-    } else if (
-      loadingPodcastsToasterRef.current &&
-      toaster.isVisible(loadingPodcastsToasterRef.current)
-    ) {
-      toaster.dismiss(loadingPodcastsToasterRef.current);
-      loadingPodcastsToasterRef.current = undefined;
-    }
-
-    if (isLoadingEpisodes) {
-      loadingEpisodesToasterRef.current = toaster.create({
-        title: LOADING_EPISODES_MESSAGE,
-        type: "info",
-      });
-    } else if (
-      loadingEpisodesToasterRef.current &&
-      toaster.isVisible(loadingEpisodesToasterRef.current)
-    ) {
-      toaster.dismiss(loadingEpisodesToasterRef.current);
-      loadingEpisodesToasterRef.current = undefined;
-    }
-  }, [isLoadingPodcasts, isLoadingEpisodes]);
-
   return (
     <>
       <VStack>
         {podcastId && (
-          <ChakraLink asChild width={"fit-content"} marginRight={"auto"}>
-            <ReactRouterLink to={getPodcastRoutePath(podcastId)}>
-              <Text>Go back</Text>
-            </ReactRouterLink>
-          </ChakraLink>
+          <HStack marginRight={"auto"} marginBottom={2}>
+            <BreadcrumbRoot size="md">
+              <ReactRouterLink to="/">
+                <Text>Home</Text>
+              </ReactRouterLink>
+              <ReactRouterLink to={getPodcastRoutePath(podcastId)}>
+                <Text>Podcast</Text>
+              </ReactRouterLink>
+              <BreadcrumbCurrentLink>
+                <Text>Episode</Text>
+              </BreadcrumbCurrentLink>
+            </BreadcrumbRoot>
+          </HStack>
         )}
       </VStack>
       {episode !== undefined && (
         <Grid templateColumns={["1fr", "1fr", "1fr 3fr"]} gap={6}>
           {podcast !== undefined && (
             <GridItem>
-              <ReactRouterLink to={"/podcast/" + podcastId}>
-                <PodcastDetailsCard podcast={podcast} />
-              </ReactRouterLink>
+              {isLoadingPodcasts && (
+                <Center>
+                  <Loading text={LOADING_PODCASTS_MESSAGE} />
+                </Center>
+              )}
+              {!isLoadingPodcasts && <PodcastDetailsCard podcast={podcast} />}
             </GridItem>
           )}
           {episode !== undefined && (
             <GridItem>
-              <EpisodeCard
-                trackName={episode.trackName}
-                episodeUrl={episode.playbackUrl}
-                descriptionHTMLstring={episode.descriptionHTMLstring}
-              />
+              {isLoadingEpisodes && (
+                <Center>
+                  <Loading text={LOADING_EPISODES_MESSAGE} />
+                </Center>
+              )}
+              {!isLoadingEpisodes && (
+                <EpisodeCard
+                  trackName={episode.trackName}
+                  episodeUrl={episode.playbackUrl}
+                  descriptionHTMLstring={episode.descriptionHTMLstring}
+                />
+              )}
             </GridItem>
           )}
         </Grid>

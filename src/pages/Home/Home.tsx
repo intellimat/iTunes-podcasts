@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPodcasts } from "../../services/podcasts/podcasts-services";
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo } from "react";
 import { getFilteredPodcasts } from "./query/filters";
 import { Text, Input, HStack, VStack, SimpleGrid } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import PodcastHomeCard from "../../components/cards/PodcastHomeCard";
 import { LOADING_PODCASTS_MESSAGE } from "../../messages/loading";
-import { toaster } from "../../components/ui/toaster";
+import Loading from "../../components/Loading";
 
 export default function Home() {
   const { data, isLoading } = useQuery({
@@ -22,23 +22,9 @@ export default function Home() {
     return getFilteredPodcasts(query, data);
   }, [data, query]);
 
-  const toasterRef = useRef<string | undefined>(undefined);
-
-  useMemo(() => {
-    if (isLoading) {
-      toasterRef.current = toaster.create({
-        title: LOADING_PODCASTS_MESSAGE,
-        type: "info",
-      });
-    } else if (toasterRef.current && toaster.isVisible(toasterRef.current)) {
-      toaster.dismiss(toasterRef.current);
-      toasterRef.current = undefined;
-    }
-  }, [isLoading]);
-
   return (
     <VStack>
-      {/* {isLoading && <Loading text={LOADING_PODCASTS_MESSAGE} />} */}
+      {isLoading && <Loading text={LOADING_PODCASTS_MESSAGE} />}
       {!isLoading && (
         <>
           <HStack
@@ -51,7 +37,7 @@ export default function Home() {
             <Text
               fontSize={"lg"}
               bg={{ base: "bg.muted", _dark: "bg.muted" }}
-              color={"ButtonText"}
+              color={"InfoText"}
               borderRadius={4}
               padding={1.5}
             >
