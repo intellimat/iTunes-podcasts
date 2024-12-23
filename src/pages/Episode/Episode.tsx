@@ -1,13 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import {
-  VStack,
-  Link as ChakraLink,
-  Text,
-  Grid,
-  GridItem,
-  Center,
-} from "@chakra-ui/react";
+import { VStack, Grid, GridItem, Center, HStack, Text } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import {
   getPodcastEpisodes,
@@ -23,6 +16,10 @@ import {
 } from "../../messages/loading";
 import { IPodcast } from "../../types";
 import Loading from "../../components/Loading";
+import {
+  BreadcrumbCurrentLink,
+  BreadcrumbRoot,
+} from "../../components/ui/breadcrumb";
 
 export default function Episode() {
   const { podcastId, episodeTrackId } = useParams<{
@@ -49,11 +46,19 @@ export default function Episode() {
     <>
       <VStack>
         {podcastId && (
-          <ChakraLink asChild width={"fit-content"} marginRight={"auto"}>
-            <ReactRouterLink to={getPodcastRoutePath(podcastId)}>
-              <Text>Go back</Text>
-            </ReactRouterLink>
-          </ChakraLink>
+          <HStack marginRight={"auto"} marginBottom={2}>
+            <BreadcrumbRoot size="md">
+              <ReactRouterLink to="/">
+                <Text>Home</Text>
+              </ReactRouterLink>
+              <ReactRouterLink to={getPodcastRoutePath(podcastId)}>
+                <Text>Podcast</Text>
+              </ReactRouterLink>
+              <BreadcrumbCurrentLink>
+                <Text>Episode</Text>
+              </BreadcrumbCurrentLink>
+            </BreadcrumbRoot>
+          </HStack>
         )}
       </VStack>
       {episode !== undefined && (

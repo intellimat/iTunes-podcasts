@@ -4,14 +4,7 @@ import {
   getPodcasts,
 } from "../../services/podcasts/podcasts-services";
 import { Link as ReactRouterLink, useParams } from "react-router-dom";
-import {
-  VStack,
-  Link as ChakraLink,
-  Text,
-  Grid,
-  GridItem,
-  Center,
-} from "@chakra-ui/react";
+import { VStack, Grid, GridItem, Center, HStack, Text } from "@chakra-ui/react";
 import EpisodePreviewCard from "../../components/cards/EpisodeCardPreviewCard";
 import PodcastDetailsCard from "../../components/cards/PodcastDetailsCard";
 import {
@@ -20,6 +13,10 @@ import {
 } from "../../messages/loading";
 import { IPodcast } from "../../types";
 import Loading from "../../components/Loading";
+import {
+  BreadcrumbCurrentLink,
+  BreadcrumbRoot,
+} from "../../components/ui/breadcrumb";
 
 export default function Podcast() {
   const { podcastId } = useParams<{ podcastId: string }>();
@@ -36,13 +33,16 @@ export default function Podcast() {
 
   return (
     <>
-      <VStack>
-        <ChakraLink asChild width={"fit-content"} marginRight={"auto"}>
-          <ReactRouterLink to={"/"}>
-            <Text>Go back</Text>
+      <HStack marginRight={"auto"}>
+        <BreadcrumbRoot size="md" marginBottom={2}>
+          <ReactRouterLink to="/">
+            <Text>Home</Text>
           </ReactRouterLink>
-        </ChakraLink>
-      </VStack>
+          <BreadcrumbCurrentLink>
+            <Text>Podcast</Text>
+          </BreadcrumbCurrentLink>
+        </BreadcrumbRoot>
+      </HStack>
       {podcastId !== undefined && (
         <Grid
           overflow={"hidden"}
