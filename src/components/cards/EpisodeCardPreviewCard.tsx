@@ -28,7 +28,7 @@ const EpisodePreviewCard = ({
   time,
 }: //   imageUrl,
 Props) => (
-  <Card.Root flexDirection="row">
+  <Card.Root flexDirection="row" width={"100%"}>
     {/* <Image
       objectFit="cover"
       maxW="200px"
