@@ -1,0 +1,2 @@
+export const PODCASTS_LIMITS = ["10", "25", "50"];
+export const DEFAULT_PODCASTS_LIMIT = PODCASTS_LIMITS[1];

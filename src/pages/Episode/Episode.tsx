@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { VStack, Grid, GridItem, Center, HStack, Text } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import {
@@ -26,6 +26,7 @@ export default function Episode() {
     podcastId: string;
     episodeTrackId: string;
   }>();
+  const [searchParams] = useSearchParams();
   const { data: episode, isLoading: isLoadingEpisodes } = useQuery({
     queryKey: ["podcast-" + podcastId + "-episodes"],
     queryFn: () => {
@@ -37,7 +38,7 @@ export default function Episode() {
   });
   const { data: podcast, isLoading: isLoadingPodcasts } = useQuery({
     queryKey: ["podcasts"],
-    queryFn: getPodcasts,
+    queryFn: () => getPodcasts(searchParams.get("podcastsLimit") || "50"),
     select: (data: IPodcast[]) =>
       data?.find((p: IPodcast) => p.id === podcastId),
   });
