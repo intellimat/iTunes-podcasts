@@ -6,8 +6,8 @@ import {
 } from "./mappers";
 import { getPodcastEpisodesUrl, getTop100UsPodcastsUrl } from "./urls";
 
-export async function getPodcasts(): Promise<IPodcast[]> {
-  const data = await getJSON<{ feed: IFeed }>(getTop100UsPodcastsUrl());
+export async function getPodcasts(limit: string): Promise<IPodcast[]> {
+  const data = await getJSON<{ feed: IFeed }>(getTop100UsPodcastsUrl(limit));
   return mapFeedToIPodcastList(data.feed);
 }
 

@@ -3,8 +3,8 @@ const TOPUSPODCASTS = "/us/rss/toppodcasts";
 const LOOKUP = "/lookup";
 const LIMIT = "100";
 
-export function getTop100UsPodcastsUrl() {
-  return BASE_API_URL + TOPUSPODCASTS + "/limit=" + LIMIT + "/json";
+export function getTop100UsPodcastsUrl(limit: string) {
+  return BASE_API_URL + TOPUSPODCASTS + "/limit=" + limit + "/json";
 }
 export function getPodcastEpisodesUrl(id: string) {
   const url = new URL(BASE_API_URL + LOOKUP);

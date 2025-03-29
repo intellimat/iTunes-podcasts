@@ -7,11 +7,17 @@ import { Link as ReactRouterLink } from "react-router-dom";
 import PodcastHomeCard from "../../components/cards/PodcastHomeCard";
 import { LOADING_PODCASTS_MESSAGE } from "../../messages/loading";
 import Loading from "../../components/Loading";
+import { SegmentGroup } from "@chakra-ui/react";
+
+const LIMITS = ["10", "25", "50"];
+const DEFAULT_LIMIT = LIMITS[1];
 
 export default function Home() {
+  const [limit, setLimit] = useState<string>(DEFAULT_LIMIT);
+
   const { data, isLoading } = useQuery({
-    queryKey: ["podcasts"],
-    queryFn: getPodcasts,
+    queryKey: ["podcasts", limit],
+    queryFn: () => getPodcasts(limit),
   });
 
   const [query, setQuery] = useState("");
@@ -24,33 +30,43 @@ export default function Home() {
 
   return (
     <VStack>
-      {isLoading && <Loading text={LOADING_PODCASTS_MESSAGE} />}
-      {!isLoading && (
+      {isLoading ? (
+        <Loading text={LOADING_PODCASTS_MESSAGE} />
+      ) : (
         <>
-          <HStack
-            width={["100%", "60%", "35%", "25%"]}
-            marginTop={1}
-            marginBottom={2}
-            marginLeft={["unset", "unset", "auto"]}
-            marginRight={["auto", "auto", "unset"]}
-          >
-            <Text
-              fontSize={"lg"}
-              bg={{ base: "bg.muted", _dark: "bg.muted" }}
-              color={"InfoText"}
-              borderRadius={4}
-              padding={1.5}
+          <HStack justifyContent={"space-between"} width={"100%"} wrap={"wrap"}>
+            <SegmentGroup.Root
+              value={limit}
+              onValueChange={(e) => setLimit(e.value)}
             >
-              {filteredPodcasts.length}
-            </Text>
+              <SegmentGroup.Indicator />
+              {LIMITS.map((limit) => (
+                <SegmentGroup.Item value={limit} key={limit}>
+                  <SegmentGroup.ItemText>{limit}</SegmentGroup.ItemText>
+                  <SegmentGroup.ItemHiddenInput />
+                </SegmentGroup.Item>
+              ))}
+            </SegmentGroup.Root>
+            <HStack>
+              <Text
+                fontSize={"lg"}
+                bg={{ base: "bg.muted", _dark: "bg.muted" }}
+                color={"InfoText"}
+                borderRadius={4}
+                padding={1.5}
+              >
+                {filteredPodcasts.length}
+              </Text>
 
-            <Input
-              disabled={isLoading}
-              placeholder="Filter Podcasts..."
-              onChange={({ target: { value } }) => setQuery(value)}
-            />
+              <Input
+                disabled={isLoading}
+                placeholder="Filter Podcasts..."
+                onChange={({ target: { value } }) => setQuery(value)}
+              />
+            </HStack>
           </HStack>
-          <SimpleGrid columns={[1, 2, 3, 4]} gap="4">
+
+          <SimpleGrid columns={[1, 2, 3, 4]} gap="4" width={"100%"}>
             {filteredPodcasts.map((p) => (
               <ReactRouterLink key={p.id} to={"/podcast/" + p.id}>
                 <PodcastHomeCard
