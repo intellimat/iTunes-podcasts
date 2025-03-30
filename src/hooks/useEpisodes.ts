@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { IEpisode, IParsedEpisode } from "../types";
+import { IParsedEpisode } from "../types";
 import { getPodcastEpisodes } from "../services/podcasts/podcasts-services";
 
 const useEpisodes = (
   episodesLimit: string,
   podcastId: string,
-  select?: (data: IEpisode[]) => IParsedEpisode[]
+  select?: (data: IParsedEpisode[]) => IParsedEpisode[]
 ) => {
   const response = useQuery({
     queryKey: ["podcast-" + podcastId + "-episodes", episodesLimit],
