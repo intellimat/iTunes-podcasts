@@ -1,12 +1,17 @@
 import { IPodcast } from "../../../types";
 
 export function getFilteredPodcasts(
-  searchText: string,
-  podcasts: IPodcast[] | undefined
+  podcasts: IPodcast[] | undefined,
+  searchText?: string
 ) {
   if (!Array.isArray(podcasts)) {
     return [];
   }
+
+  if (!searchText) {
+    return podcasts;
+  }
+
   const upperCaseSearchText = searchText.toUpperCase();
   return podcasts.filter(
     (p) =>

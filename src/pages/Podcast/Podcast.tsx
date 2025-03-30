@@ -1,8 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-import {
-  getPodcastEpisodes,
-  getPodcasts,
-} from "../../services/podcasts/podcasts-services";
 import {
   Link as ReactRouterLink,
   useParams,
@@ -23,7 +18,6 @@ import {
   LOADING_EPISODES_MESSAGE,
   LOADING_PODCASTS_MESSAGE,
 } from "../../messages/loading";
-import { IPodcast } from "../../types";
 import Loading from "../../components/Loading";
 import {
   BreadcrumbCurrentLink,
@@ -36,6 +30,8 @@ import {
 } from "../../constants";
 import { useEffect, useState } from "react";
 import { getEpisodeRoutePath } from "../../routing/paths";
+import usePodcasts from "../../hooks/usePodcasts";
+import useEpisodes from "../../hooks/useEpisodes";
 
 export default function Podcast() {
   const { podcastId } = useParams<{ podcastId: string }>();
@@ -44,21 +40,17 @@ export default function Podcast() {
     DEFAULT_EPISODES_LIMIT
   );
 
-  const { data: episodes, isLoading: isLoadingEpisodes } = useQuery({
-    queryKey: ["podcast-" + podcastId + "-episodes", episodesLimit],
-    queryFn: () => getPodcastEpisodes(podcastId!, episodesLimit),
-  });
+  const { data: episodes, isLoading: isLoadingEpisodes } = useEpisodes(
+    episodesLimit,
+    podcastId!
+  );
 
-  const { data: podcast, isLoading: isLoadingPodcasts } = useQuery({
-    queryKey: ["podcasts"],
-    queryFn: () =>
-      getPodcasts(
-        searchParams.get("podcastsLimit") ||
-          PODCASTS_LIMITS[PODCASTS_LIMITS.length - 1]
-      ),
-    select: (data: IPodcast[]) =>
-      data?.find((p: IPodcast) => p.id === podcastId),
-  });
+  const { data: podcasts, isLoading: isLoadingPodcasts } = usePodcasts(
+    searchParams.get("podcastsLimit") ||
+      PODCASTS_LIMITS[PODCASTS_LIMITS.length - 1],
+    undefined,
+    (data) => data.filter((p) => p.id === podcastId)
+  );
 
   useEffect(() => {
     setSearchParams((prevParams) => {
@@ -106,14 +98,16 @@ export default function Podcast() {
           ]}
           gap={6}
         >
-          {podcast && (
+          {podcasts && (
             <GridItem>
               {isLoadingPodcasts && (
                 <Center>
                   <Loading text={LOADING_PODCASTS_MESSAGE} />
                 </Center>
               )}
-              {!isLoadingPodcasts && <PodcastDetailsCard podcast={podcast} />}
+              {!isLoadingPodcasts && (
+                <PodcastDetailsCard podcast={podcasts[0]} />
+              )}
             </GridItem>
           )}
           <GridItem>

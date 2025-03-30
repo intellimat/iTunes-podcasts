@@ -1,7 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { getPodcasts } from "../../services/podcasts/podcasts-services";
-import { useState, useMemo, useEffect } from "react";
-import { getFilteredPodcasts } from "./query/filters";
+import { useState, useEffect } from "react";
 import { Text, Input, HStack, VStack, SimpleGrid } from "@chakra-ui/react";
 import { Link as ReactRouterLink, useSearchParams } from "react-router-dom";
 import PodcastHomeCard from "../../components/cards/PodcastHomeCard";
@@ -9,12 +6,16 @@ import { LOADING_PODCASTS_MESSAGE } from "../../messages/loading";
 import Loading from "../../components/Loading";
 import { SegmentGroup } from "@chakra-ui/react";
 import { DEFAULT_PODCASTS_LIMIT, PODCASTS_LIMITS } from "../../constants";
+import usePodcasts from "../../hooks/usePodcasts";
 
 export default function Home() {
   const [podcastsLimit, setPodcastsLimit] = useState<string>(
     DEFAULT_PODCASTS_LIMIT
   );
+  const [query, setQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const { data, isLoading } = usePodcasts(podcastsLimit, query);
 
   useEffect(() => {
     setSearchParams((prevParams) => {
@@ -23,19 +24,6 @@ export default function Home() {
       return newParams;
     });
   }, [podcastsLimit, searchParams, setSearchParams]);
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["podcasts", podcastsLimit],
-    queryFn: () => getPodcasts(podcastsLimit),
-  });
-
-  const [query, setQuery] = useState("");
-  const filteredPodcasts = useMemo(() => {
-    if (data === undefined) {
-      return [];
-    }
-    return getFilteredPodcasts(query, data);
-  }, [data, query]);
 
   return (
     <VStack>
@@ -64,7 +52,7 @@ export default function Home() {
                 borderRadius={4}
                 padding={1.5}
               >
-                {filteredPodcasts.length}
+                {data.length}
               </Text>
 
               <Input
@@ -76,7 +64,7 @@ export default function Home() {
           </HStack>
 
           <SimpleGrid columns={[1, 2, 3, 4]} gap="4" width={"100%"}>
-            {filteredPodcasts.map((p) => (
+            {data?.map((p) => (
               <ReactRouterLink
                 key={p.id}
                 to={{
