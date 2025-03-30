@@ -1,0 +1,5 @@
+export const PODCASTS_LIMITS = ["10", "25", "50"];
+export const DEFAULT_PODCASTS_LIMIT = PODCASTS_LIMITS[1];
+
+export const EPISODES_LIMITS = ["10", "25", "50"];
+export const DEFAULT_EPISODES_LIMIT = EPISODES_LIMITS[1];

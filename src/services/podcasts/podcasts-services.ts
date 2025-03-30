@@ -6,16 +6,17 @@ import {
 } from "./mappers";
 import { getPodcastEpisodesUrl, getTop100UsPodcastsUrl } from "./urls";
 
-export async function getPodcasts(): Promise<IPodcast[]> {
-  const data = await getJSON<{ feed: IFeed }>(getTop100UsPodcastsUrl());
+export async function getPodcasts(limit: string): Promise<IPodcast[]> {
+  const data = await getJSON<{ feed: IFeed }>(getTop100UsPodcastsUrl(limit));
   return mapFeedToIPodcastList(data.feed);
 }
 
 export async function getPodcastEpisodes(
-  id: string
+  id: string,
+  limit: string
 ): Promise<IParsedEpisode[]> {
   const data = await getJSON<{ resultCount: number; results: IEpisode[] }>(
-    getPodcastEpisodesUrl(id)
+    getPodcastEpisodesUrl(id, limit)
   );
   return mapIEpisodeListToIParsedEpisodeList(data.results);
 }
