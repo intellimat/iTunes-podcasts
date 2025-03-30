@@ -12,10 +12,11 @@ export async function getPodcasts(limit: string): Promise<IPodcast[]> {
 }
 
 export async function getPodcastEpisodes(
-  id: string
+  id: string,
+  limit: string
 ): Promise<IParsedEpisode[]> {
   const data = await getJSON<{ resultCount: number; results: IEpisode[] }>(
-    getPodcastEpisodesUrl(id)
+    getPodcastEpisodesUrl(id, limit)
   );
   return mapIEpisodeListToIParsedEpisodeList(data.results);
 }

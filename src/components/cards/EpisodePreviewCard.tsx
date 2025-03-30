@@ -7,7 +7,6 @@ import {
   Link as ChakraLink,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import { getEpisodeRoutePath } from "../../routing/paths";
 
 interface Props {
   title: string;
@@ -17,24 +16,17 @@ interface Props {
   imageUrl: string;
   podcastId: string;
   trackId: number;
+  linkTo: { pathname: string; search: string };
 }
 
 const EpisodePreviewCard = ({
-  podcastId,
-  trackId,
   title,
   description,
   date,
   time,
-}: //   imageUrl,
-Props) => (
+  linkTo,
+}: Props) => (
   <Card.Root flexDirection="row" width={"100%"}>
-    {/* <Image
-      objectFit="cover"
-      maxW="200px"
-      src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
-      alt="Caffe Latte"
-    /> */}
     <Box>
       <Card.Body paddingBottom={3}>
         <Card.Title mb="2">{title}</Card.Title>
@@ -56,7 +48,7 @@ Props) => (
             }}
             borderBlockStyle={"thin"}
           >
-            <ReactRouterLink to={getEpisodeRoutePath(podcastId, trackId)}>
+            <ReactRouterLink to={linkTo}>
               <Text>More</Text>
             </ReactRouterLink>
           </ChakraLink>

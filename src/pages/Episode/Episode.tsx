@@ -31,7 +31,10 @@ export default function Episode() {
     queryKey: ["podcast-" + podcastId + "-episodes"],
     queryFn: () => {
       if (podcastId) {
-        return getPodcastEpisodes(podcastId);
+        return getPodcastEpisodes(
+          podcastId,
+          searchParams.get("episodesLimit") || "50"
+        );
       }
     },
     select: (data) => mapEpisode(data, episodeTrackId),
