@@ -10,7 +10,7 @@ import usePodcasts from "../../hooks/usePodcasts";
 
 export default function Home() {
   const [podcastsLimit, setPodcastsLimit] = useState<string>(
-    DEFAULT_PODCASTS_LIMIT
+    DEFAULT_PODCASTS_LIMIT,
   );
   const [query, setQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -34,7 +34,7 @@ export default function Home() {
           <HStack justifyContent={"space-between"} width={"100%"} wrap={"wrap"}>
             <SegmentGroup.Root
               value={podcastsLimit}
-              onValueChange={(e) => setPodcastsLimit(e.value)}
+              onValueChange={(e) => e.value && setPodcastsLimit(e.value)}
             >
               <SegmentGroup.Indicator />
               {PODCASTS_LIMITS.map((limit) => (

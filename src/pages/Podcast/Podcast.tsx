@@ -37,19 +37,19 @@ export default function Podcast() {
   const { podcastId } = useParams<{ podcastId: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
   const [episodesLimit, setEpisodesLimit] = useState<string>(
-    DEFAULT_EPISODES_LIMIT
+    DEFAULT_EPISODES_LIMIT,
   );
 
   const { data: episodes, isLoading: isLoadingEpisodes } = useEpisodes(
     episodesLimit,
-    podcastId!
+    podcastId!,
   );
 
   const { data: podcasts, isLoading: isLoadingPodcasts } = usePodcasts(
     searchParams.get("podcastsLimit") ||
       PODCASTS_LIMITS[PODCASTS_LIMITS.length - 1],
     undefined,
-    (data) => data.filter((p) => p.id === podcastId)
+    (data) => data.filter((p) => p.id === podcastId),
   );
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function Podcast() {
         </BreadcrumbRoot>
         <SegmentGroup.Root
           value={episodesLimit}
-          onValueChange={(e) => setEpisodesLimit(e.value)}
+          onValueChange={(e) => e.value && setEpisodesLimit(e.value)}
         >
           <SegmentGroup.Indicator />
           {EPISODES_LIMITS.map((limit) => (
