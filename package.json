@@ -14,7 +14,7 @@
     "npm": ">=10.9.0"
   },
   "dependencies": {
-    "@chakra-ui/react": "^3.2.3",
+    "@chakra-ui/react": "^3.33.0",
     "@emotion/react": "^11.14.0",
     "@tanstack/query-sync-storage-persister": "^5.62.8",
     "@tanstack/react-query": "^5.62.8",
